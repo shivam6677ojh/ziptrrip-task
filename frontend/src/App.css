@@ -165,10 +165,19 @@
 
 .todo-card h2 {
     margin: 0;
-    color: #0f172a;
     font-size: 20px;
     line-height: 1.25;
     overflow-wrap: anywhere;
+}
+
+.todo-card h2 a {
+    color: #0f172a;
+    text-decoration: none;
+}
+
+.todo-card h2 a:hover {
+    color: #2563eb;
+    text-decoration: underline;
 }
 
 .todo-card p {
@@ -188,6 +197,54 @@
     padding: 9px 12px;
     color: #b91c1c;
     background: #fee2e2;
+}
+
+.details-card {
+    display: grid;
+    gap: 22px;
+    padding: 22px;
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    text-align: left;
+}
+
+.details-card h2 {
+    margin: 6px 0 0;
+    color: #0f172a;
+    font-size: 28px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.details-card p {
+    margin: 6px 0 0;
+    color: #475569;
+    overflow-wrap: anywhere;
+}
+
+.details-label {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.details-card .status-done {
+    color: #0f766e;
+    font-weight: 700;
+}
+
+.details-card .status-pending {
+    color: #b45309;
+    font-weight: 700;
 }
 
 @media (max-width: 760px) {
@@ -210,5 +267,9 @@
     .delete-button,
     .home-link {
         width: 100%;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
     }
 }

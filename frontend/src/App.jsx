@@ -1,11 +1,17 @@
 import './App.css';
+import TodoDetails from './pages/TodoDetails.jsx';
 import Todos from './pages/Todos.jsx';
 
 function App() {
     const isTodosPage = window.location.pathname === '/todos';
+    const isTodoDetailsPage = window.location.pathname === '/todo';
 
     if (isTodosPage) {
         return <Todos />;
+    }
+
+    if (isTodoDetailsPage) {
+        return <TodoDetails />;
     }
 
     return (

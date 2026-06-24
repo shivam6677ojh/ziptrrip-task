@@ -181,7 +181,9 @@ function Todos() {
                                     }`}
                                 />
                                 <div>
-                                    <h2>{todo.title}</h2>
+                                    <h2>
+                                        <a href={`/todo?id=${todo._id}`}>{todo.title}</a>
+                                    </h2>
                                     {todo.description && <p>{todo.description}</p>}
                                 </div>
                             </div>
