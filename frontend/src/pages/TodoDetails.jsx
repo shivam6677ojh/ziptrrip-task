@@ -66,12 +66,40 @@ function TodoDetails() {
                     <p className="eyebrow">Todo Details</p>
                     <h1>Task Information</h1>
                 </div>
-                <a href="/todos" className="home-link">
+                <a href="/todos" className="home-link" style={{ display: 'inline-flex', gap: '8px', alignItems: 'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
                     Back
                 </a>
             </section>
 
-            {loading && <p className="message">Loading todo...</p>}
+            {loading && (
+                <section className="details-card">
+                    <div>
+                        <span className="details-label">Title</span>
+                        <div className="skeleton-details-title skeleton-shimmer" style={{ marginTop: '8px' }}></div>
+                    </div>
+
+                    <div>
+                        <span className="details-label">Description</span>
+                        <div className="skeleton-details-desc skeleton-shimmer" style={{ marginTop: '8px' }}></div>
+                    </div>
+
+                    <div className="details-grid">
+                        <div>
+                            <span className="details-label">Completed Status</span>
+                            <div className="skeleton-details-grid-item skeleton-shimmer" style={{ marginTop: '8px' }}></div>
+                        </div>
+
+                        <div>
+                            <span className="details-label">Created Date</span>
+                            <div className="skeleton-details-grid-item skeleton-shimmer" style={{ marginTop: '8px' }}></div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {!loading && error && <p className="message error-message">{error}</p>}
 
@@ -90,9 +118,11 @@ function TodoDetails() {
                     <div className="details-grid">
                         <div>
                             <span className="details-label">Completed Status</span>
-                            <p className={todo.completed ? 'status-done' : 'status-pending'}>
-                                {todo.completed ? 'Completed' : 'Pending'}
-                            </p>
+                            <div>
+                                <span className={`status-badge ${todo.completed ? 'completed-badge' : 'pending-badge'}`}>
+                                    {todo.completed ? 'Completed' : 'Pending'}
+                                </span>
+                            </div>
                         </div>
 
                         <div>
