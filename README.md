@@ -2,6 +2,17 @@
 
 A modern, responsive, and visual full-stack Todo Management Application built using the MERN stack (MongoDB, Express, React, Node.js) with Vite.
 
+## Screenshots
+
+### Home Page
+![Home Page](screenshots/homepage.png)
+
+### Todo List Page
+![Todo List Page](screenshots/todos.png)
+
+### Task Details Page
+![Task Details Page](screenshots/details.png)
+
 ---
 
 ## Tech Stack
