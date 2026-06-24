@@ -39,6 +39,9 @@
 .primary-link,
 .home-link,
 .todo-form button,
+.edit-button,
+.save-button,
+.cancel-button,
 .delete-button {
     border: 0;
     border-radius: 8px;
@@ -49,7 +52,8 @@
 }
 
 .primary-link,
-.todo-form button {
+.todo-form button,
+.save-button {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -199,6 +203,47 @@
     background: #fee2e2;
 }
 
+.todo-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.edit-button,
+.cancel-button {
+    padding: 9px 12px;
+    color: #1e293b;
+    background: #e2e8f0;
+}
+
+.save-button {
+    padding: 0 14px;
+}
+
+.edit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto auto;
+    gap: 14px;
+    align-items: end;
+    width: 100%;
+}
+
+.status-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    color: #334155;
+    font-weight: 700;
+}
+
+.status-field input {
+    width: 18px;
+    height: 18px;
+    accent-color: #0f766e;
+}
+
 .details-card {
     display: grid;
     gap: 22px;
@@ -264,9 +309,21 @@
     }
 
     .todo-form button,
+    .todo-actions,
     .delete-button,
+    .edit-button,
+    .save-button,
+    .cancel-button,
     .home-link {
         width: 100%;
+    }
+
+    .todo-actions {
+        flex-direction: column;
+    }
+
+    .edit-form {
+        grid-template-columns: 1fr;
     }
 
     .details-grid {

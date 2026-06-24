@@ -6,6 +6,10 @@ function Todos() {
     const [todos, setTodos] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [editingId, setEditingId] = useState(null);
+    const [editTitle, setEditTitle] = useState('');
+    const [editDescription, setEditDescription] = useState('');
+    const [editCompleted, setEditCompleted] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -98,6 +102,57 @@ function Todos() {
         }
     };
 
+    const startEdit = (todo) => {
+        setEditingId(todo._id);
+        setEditTitle(todo.title);
+        setEditDescription(todo.description || '');
+        setEditCompleted(todo.completed);
+        setError('');
+    };
+
+    const cancelEdit = () => {
+        setEditingId(null);
+        setEditTitle('');
+        setEditDescription('');
+        setEditCompleted(false);
+    };
+
+    const updateTodo = async (event) => {
+        event.preventDefault();
+
+        if (!editTitle.trim()) {
+            setError('Title is required');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/api/todos/${editingId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: editTitle,
+                    description: editDescription,
+                    completed: editCompleted,
+                }),
+            });
+            const updatedTodo = await response.json();
+
+            if (!response.ok) {
+                throw new Error(updatedTodo.message || 'Failed to update todo');
+            }
+
+            setTodos((currentTodos) =>
+                currentTodos.map((todo) => (todo._id === updatedTodo._id ? updatedTodo : todo)),
+            );
+            cancelEdit();
+            setError('');
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     const deleteTodo = async (id) => {
         try {
             const response = await fetch(`${API_URL}/api/todos/${id}`, {
@@ -166,37 +221,104 @@ function Todos() {
                 )}
 
                 {!loading &&
-                    todos.map((todo) => (
-                        <article
-                            className={`todo-card ${todo.completed ? 'completed' : ''}`}
-                            key={todo._id}
-                        >
-                            <div className="todo-main">
-                                <input
-                                    type="checkbox"
-                                    checked={todo.completed}
-                                    onChange={() => toggleTodo(todo)}
-                                    aria-label={`Mark ${todo.title} as ${
-                                        todo.completed ? 'incomplete' : 'completed'
-                                    }`}
-                                />
-                                <div>
-                                    <h2>
-                                        <a href={`/todo?id=${todo._id}`}>{todo.title}</a>
-                                    </h2>
-                                    {todo.description && <p>{todo.description}</p>}
-                                </div>
-                            </div>
+                    todos.map((todo) => {
+                        const isEditing = editingId === todo._id;
 
-                            <button
-                                type="button"
-                                className="delete-button"
-                                onClick={() => deleteTodo(todo._id)}
+                        return (
+                            <article
+                                className={`todo-card ${todo.completed ? 'completed' : ''}`}
+                                key={todo._id}
                             >
-                                Delete
-                            </button>
-                        </article>
-                    ))}
+                                {isEditing ? (
+                                    <form className="edit-form" onSubmit={updateTodo}>
+                                        <div className="form-field">
+                                            <label htmlFor={`edit-title-${todo._id}`}>Title</label>
+                                            <input
+                                                id={`edit-title-${todo._id}`}
+                                                type="text"
+                                                value={editTitle}
+                                                onChange={(event) => setEditTitle(event.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className="form-field">
+                                            <label htmlFor={`edit-description-${todo._id}`}>
+                                                Description
+                                            </label>
+                                            <input
+                                                id={`edit-description-${todo._id}`}
+                                                type="text"
+                                                value={editDescription}
+                                                onChange={(event) =>
+                                                    setEditDescription(event.target.value)
+                                                }
+                                            />
+                                        </div>
+
+                                        <label className="status-field">
+                                            <input
+                                                type="checkbox"
+                                                checked={editCompleted}
+                                                onChange={(event) =>
+                                                    setEditCompleted(event.target.checked)
+                                                }
+                                            />
+                                            Completed
+                                        </label>
+
+                                        <div className="todo-actions">
+                                            <button type="submit" className="save-button">
+                                                Save
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="cancel-button"
+                                                onClick={cancelEdit}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <div className="todo-main">
+                                            <input
+                                                type="checkbox"
+                                                checked={todo.completed}
+                                                onChange={() => toggleTodo(todo)}
+                                                aria-label={`Mark ${todo.title} as ${
+                                                    todo.completed ? 'incomplete' : 'completed'
+                                                }`}
+                                            />
+                                            <div>
+                                                <h2>
+                                                    <a href={`/todo?id=${todo._id}`}>{todo.title}</a>
+                                                </h2>
+                                                {todo.description && <p>{todo.description}</p>}
+                                            </div>
+                                        </div>
+
+                                        <div className="todo-actions">
+                                            <button
+                                                type="button"
+                                                className="edit-button"
+                                                onClick={() => startEdit(todo)}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="delete-button"
+                                                onClick={() => deleteTodo(todo._id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </article>
+                        );
+                    })}
             </section>
         </main>
     );

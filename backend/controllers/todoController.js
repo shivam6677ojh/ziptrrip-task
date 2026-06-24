@@ -68,9 +68,23 @@ export const updateTodo = async (req, res) => {
             return res.status(400).json({ message: 'Completed must be true or false' });
         }
 
+        const updateData = {};
+
+        if (title !== undefined) {
+            updateData.title = title;
+        }
+
+        if (description !== undefined) {
+            updateData.description = description;
+        }
+
+        if (completed !== undefined) {
+            updateData.completed = completed;
+        }
+
         const updatedTodo = await Todo.findByIdAndUpdate(
             id,
-            { title, description, completed },
+            updateData,
             { new: true, runValidators: true },
         );
 
