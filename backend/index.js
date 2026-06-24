@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
     res.send('Ziptrrip Todo API is running');
 });
 
+
 app.use('/api/todos', todoRoutes);
 
 if (MONGO_URI) {
